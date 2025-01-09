@@ -11,7 +11,7 @@ import (
 
 const (
 	PacketTypeLoginRequest   = 'L'
-	PacketLengthLoginRequest = 52
+	PacketLengthLoginRequest = 47
 
 	PacketTypeLoginAccepted   = 'A'
 	PacketLengthLoginAccepted = 31
@@ -162,7 +162,6 @@ type LoginRequestPacket struct {
 	Password         [10]byte
 	Session          [10]byte
 	SequenceNumber   [20]byte
-	HeartbeatTimeout [5]byte
 }
 
 func makeLoginRequestPacket(username, password, session string, sequence uint64) Packet {
@@ -178,7 +177,6 @@ func makeLoginRequestPacket(username, password, session string, sequence uint64)
 
 	copy(packet.Username[:], username)
 	copy(packet.Password[:], password)
-	copy(packet.HeartbeatTimeout[:], fmt.Sprint(heartbeatPeriod_ms))
 	copy(packet.SequenceNumber[:], fmt.Sprintf("%20s", strconv.FormatUint(sequence, 10)))
 	copy(packet.Session[:], fmt.Sprintf("%10s", session))
 
